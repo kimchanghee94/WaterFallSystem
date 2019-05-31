@@ -1,0 +1,1 @@
+cmd_/home/pi/spteam/motor/servo180_dev.ko := ld -EL -r  -T ./scripts/module-common.lds --build-id  -o /home/pi/spteam/motor/servo180_dev.ko /home/pi/spteam/motor/servo180_dev.o /home/pi/spteam/motor/servo180_dev.mod.o ;  true
