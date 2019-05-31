@@ -1,35 +1,92 @@
 #include <stdio.h>
-#include <string.h>
-#include <sys/types.h>
-#include <fcntl.h>
-#include <unistd.h>
 #include <stdlib.h>
-#include <linux/kdev_t.h>
+#include <unistd.h>
+#include <dirent.h>
+#include <string.h>
+#include <time.h>
+#include <errno.h>
 
-#define DEV_PATH "/dev/temperature_dev"
+#define PROBEPATH "/sys/bus/w1/devices"
+#define MAXPROBES 5
+#define PROBENAMELEN 80
+#define BUFSIZE 256
 
-#define BUFFER 1024
+char probepath[MAXPROBES][PROBENAMELEN];
+char probename[MAXPROBES][PROBENAMELEN];
+char alias[MAXPROBES][BUFSIZE];
 
+FILE *probefd;
+int numOfSensor;
 
-int main(void){
-	int temperature_fd = open(DEV_PATH,O_RDWR|O_NONBLOCK);
-	char buffer[BUFFER];
-	char receive[BUFFER];
-	int recev = 0;
+int findprobes(void){
+	struct dirent *pDirent;
+	DIR *pDir;
+	int count;
 
-	if(temperature_fd < 0){
-		printf("Failure : while openning device node\n");
-		printf("%d\n",temperature_fd);
-		exit(1);
+	count = 0;
+
+	pDir = opendir(PROBEPATH);
+	if(pDir==NULL){
+		printf("Cannot open directory '%s'\n",PROBEPATH);
+		return 0;
+	}
+
+	while((pDirent = readdir(pDir)) != NULL){
+		if(pDirent->d_name[0] == '2' && pDirent->d_name[1]=='8'
+				&& pDirent->d_name[2] == '-'){
+
+			snprintf(probepath[count],PROBENAMELEN-1,"%s/%s/w1_slave",PROBEPATH,pDirent->d_name);
+			snprintf(probename[count],PROBENAMELEN-1,"%s",pDirent->d_name);
+
+			printf("Found DS18B20 compatible probe named '%s':\nDevice file '%s'\n",probename[count],probepath[count]);
+			count++;
+		}
+	}
+
+	closedir(pDir);
+	return count;
+}
+
+int main(){
+	int i;
+	double temperature;
+	char *temp;
+	time_t now;
+	struct tm *t;
+	char buf[BUFSIZE];
+
+	numOfSensor = findprobes();
+	if(numOfSensor==0){
+		printf("Error: No DS18B20 compatible probes located.\n");
+		exit(-1);
 	}
 
 	while(1){
-		usleep(1000*500);
-		read(temperature_fd,receive,BUFFER);
-		printf("%d\n",recev);
-	}
+		for(i=0;i<numOfSensor;i++){
+			probefd = fopen(probepath[i],"r");
 
-	close(temperature_fd);
+			if(probefd==NULL){
+				printf("Error\n");
+				exit(-1);
+			}
+
+			fgets(buf,sizeof(buf)-1,probefd);
+			memset(buf,0,sizeof(buf));
+
+			fgets(buf,sizeof(buf)-1,probefd);
+			temp = strtok(buf,"t=");
+			temp = strtok(NULL,"t=");
+			temperature = atof(temp)/1000;
+
+			now = time(NULL);
+			t = localtime(&now);
+
+			printf("%2.3f\n",temperature);
+
+			fclose(probefd);
+		}
+	}
 	return 0;
 }
+
 

@@ -1,14 +1,11 @@
-KERNELDIR = /lib/modules/4.14.79-v7+/build
-
-
+KERNELDIR = /lib/modules/$(shell uname -r)/build
 
 obj-m := rains_dev.o
 
-PWD = $(shell pwd)
+PWD := $(shell pwd)
 
 all :
 	make -C $(KERNELDIR) M=$(PWD) modules
 
-
-clean :
+clean:
 	make -C $(KERNELDIR) M=$(PWD) clean

@@ -1,6 +1,9 @@
+#include <linux/build-salt.h>
 #include <linux/module.h>
 #include <linux/vermagic.h>
 #include <linux/compiler.h>
+
+BUILD_SALT;
 
 MODULE_INFO(vermagic, VERMAGIC_STRING);
 MODULE_INFO(name, KBUILD_MODNAME);
@@ -15,24 +18,24 @@ __attribute__((section(".gnu.linkonce.this_module"))) = {
 	.arch = MODULE_ARCH_INIT,
 };
 
-#ifdef RETPOLINE
+#ifdef CONFIG_RETPOLINE
 MODULE_INFO(retpoline, "Y");
 #endif
 
 static const struct modversion_info ____versions[]
 __used
 __attribute__((section("__versions"))) = {
-	{ 0x367398b6, __VMLINUX_SYMBOL_STR(module_layout) },
-	{ 0x6bc3fbc0, __VMLINUX_SYMBOL_STR(__unregister_chrdev) },
-	{ 0xfe990052, __VMLINUX_SYMBOL_STR(gpio_free) },
-	{ 0x78a9cfbf, __VMLINUX_SYMBOL_STR(__register_chrdev) },
-	{ 0x2e5810c6, __VMLINUX_SYMBOL_STR(__aeabi_unwind_cpp_pr1) },
-	{ 0xf4fa543b, __VMLINUX_SYMBOL_STR(arm_copy_to_user) },
-	{ 0xe0dc9a18, __VMLINUX_SYMBOL_STR(gpiod_get_raw_value) },
-	{ 0x27e1a049, __VMLINUX_SYMBOL_STR(printk) },
-	{ 0xe145495b, __VMLINUX_SYMBOL_STR(gpiod_direction_input) },
-	{ 0x3ee15874, __VMLINUX_SYMBOL_STR(gpio_to_desc) },
-	{ 0xb1ad28e0, __VMLINUX_SYMBOL_STR(__gnu_mcount_nc) },
+	{ 0x3f584fcd, "module_layout" },
+	{ 0x6bc3fbc0, "__unregister_chrdev" },
+	{ 0xfe990052, "gpio_free" },
+	{ 0x83601418, "__register_chrdev" },
+	{ 0x2e5810c6, "__aeabi_unwind_cpp_pr1" },
+	{ 0xf4fa543b, "arm_copy_to_user" },
+	{ 0x1d855df9, "gpiod_get_raw_value" },
+	{ 0x7c32d0f0, "printk" },
+	{ 0x8987853, "gpiod_direction_input" },
+	{ 0x2a941df5, "gpio_to_desc" },
+	{ 0xb1ad28e0, "__gnu_mcount_nc" },
 };
 
 static const char __module_depends[]
@@ -41,4 +44,4 @@ __attribute__((section(".modinfo"))) =
 "depends=";
 
 
-MODULE_INFO(srcversion, "392D61860CFA83BB8B2A187");
+MODULE_INFO(srcversion, "528F83675D605B63E5C52E6");
