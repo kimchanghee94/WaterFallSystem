@@ -5,12 +5,19 @@
 #include <linux/fs.h>
 #include <linux/uaccess.h>
 
-#define A1 27
+#define A1 4
 
 MODULE_LICENSE("GPL");
 
+static int value = 0;
+
 int raindrop_read(struct file *flip, char *buf, size_t count, loff_t *f_pos) {
-	int value = gpio_get_value(A1);
+	
+	gpio_direction_input(A1);
+
+	printk(KERN_INFO "rain detect");
+	
+	value = gpio_get_value(A1);
 	copy_to_user(buf, &value, sizeof(int));
 	return count;
 }
@@ -21,13 +28,15 @@ static struct file_operations rain_fops = {
 
 int __init raindrop_init(void){
 	
-	
-	if(register_chrdev(0, "rains_dev", &rain_fops)<0)
+	int a= register_chrdev(0, "rains_dev", &rain_fops);
+	if(a<0){
 		printk(KERN_INFO "Raindrop sensor init failed\n");
-	else
+		}
+	else{
 		printk(KERN_INFO "Raindrop sensor init successful\n");
+		printk(KERN_INFO "major number is %d\n",a);
+	}
 	
-	gpio_direction_input(A1);
 	
 	
 	return 0;
