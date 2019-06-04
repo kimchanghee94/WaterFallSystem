@@ -1,11 +1,11 @@
-KERNELDIR = /lib/modules/$(shell uname -r)/build
+KERNELDIR = /lib/modules/4.14.98-v7+/build
 
-obj-m := temperature_dev.o
+obj-m := motor_dev.o
 
 PWD := $(shell pwd)
 
-all :
+default :
 	make -C $(KERNELDIR) M=$(PWD) modules
 
-clean:
+clean :
 	make -C $(KERNELDIR) M=$(PWD) clean

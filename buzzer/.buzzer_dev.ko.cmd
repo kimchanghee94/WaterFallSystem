@@ -1,1 +1,1 @@
-cmd_/home/pi/WaterFallSystem/buzzer/buzzer_dev.ko := ld -EL -r  -T ./scripts/module-common.lds --build-id  -o /home/pi/WaterFallSystem/buzzer/buzzer_dev.ko /home/pi/WaterFallSystem/buzzer/buzzer_dev.o /home/pi/WaterFallSystem/buzzer/buzzer_dev.mod.o ;  true
+cmd_/home/pi/WaterFallSystem/buzzer/buzzer_dev.ko := ld -r  -EL -T ./scripts/module-common.lds -T ./arch/arm/kernel/module.lds  --build-id  -o /home/pi/WaterFallSystem/buzzer/buzzer_dev.ko /home/pi/WaterFallSystem/buzzer/buzzer_dev.o /home/pi/WaterFallSystem/buzzer/buzzer_dev.mod.o ;  true

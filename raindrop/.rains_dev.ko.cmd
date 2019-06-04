@@ -1,1 +1,0 @@
-cmd_/home/pi/WaterFallSystem/raindrop/rains_dev.ko := ld -EL -r  -T ./scripts/module-common.lds --build-id  -o /home/pi/WaterFallSystem/raindrop/rains_dev.ko /home/pi/WaterFallSystem/raindrop/rains_dev.o /home/pi/WaterFallSystem/raindrop/rains_dev.mod.o ;  true
