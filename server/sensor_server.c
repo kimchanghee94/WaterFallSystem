@@ -74,6 +74,7 @@ int main(){
 				printf("Server: accept failed\n");
 				exit(0);
 			}
+			pid = fork();
 
 			if(pid==0){
 				close(listenFD);
