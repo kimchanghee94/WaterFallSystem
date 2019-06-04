@@ -33,7 +33,7 @@ int main(void){
 	while(1)
 	{
 		adcValue=read_mcp3008_adc(adcChannel);
-		printf("adc0 Value = %u\n",adcValue);
+		printf("Value = %u\n",adcValue);
 		delay(1000);
 	}
 	return 0;
