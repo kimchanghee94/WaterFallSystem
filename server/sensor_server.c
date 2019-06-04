@@ -84,9 +84,6 @@ int main(){
 					readBuff[receivedBytes]='\0';
 					fputs(readBuff,stdout);
 					fflush(stdout);
-
-					sprintf(sendBuff,"%s",readBuff);
-					write(connectFD,sendBuff,strlen(sendBuff));
 				}
 
 				close(connectFD);
