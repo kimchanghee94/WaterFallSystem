@@ -1,0 +1,11 @@
+KERNELDIR = /lib/modules/4.14.98-v7+/build
+
+obj-m := motor_dev.o
+
+PWD := $(shell pwd)
+
+default :
+	make -C $(KERNELDIR) M=$(PWD) modules
+
+clean :
+	make -C $(KERNELDIR) M=$(PWD) clean
